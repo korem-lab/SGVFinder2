@@ -31,8 +31,7 @@ There are two main algorithms here - ICRA and SGVFinder.
 
 ### ICRA
 ICRA has just a single method needed to operate it - ```single_file```. You 
-can use it directly from python (recommended), or run it using the 
-command-line wrapper ```ICRA_cmd.py```. This method takes in a (/pair of) 
+can use it directly from python (recommended). This method takes in a (/pair of) 
 fastq files and outputs a jsdel file. This file is a json file saved
 with python's ujson package. It's a dictionary whose keys are the fastq
 read ids, and the values are mapping lists. Each such mapping list is
@@ -58,7 +57,7 @@ generated using ```get_sample_map```. This is generated automatically from a
 glob string with the command-line wrapper.
 
 **NOTE:** SGVFinder WILL NOT work on a single sample. If you have a small 
-cohort we recommend changing the ```min_samp_cutoff``` or running with ```--byorig```.
+cohort we recommend changing the ```min_samp_cutoff``` (min=2) or running with ```--byorig```.
 
 
 **See the linear_example.py for a non-parallelized simple implementation.**
