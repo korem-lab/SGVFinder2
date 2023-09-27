@@ -1,11 +1,14 @@
 # ICRA and SGVFinder
 
-This code corrects read assignments by coverage based redistribution
-of ambiguously mapped reads. It then uses these correded assignments
-to detect structural variants that are either variable across a cohort
-or deleted across 25-75% of it. 
-This code was used for the paper "Structural variation in the gut 
-microbiome associates with host health", TBP. 
+This code first mapps reads to a reference database of the choice (see below for details). 
+ICRA then corrects read assignments by coverage, based on re-distribution
+of ambiguously mapped reads. The corrected assignments are used to detect
+structural variants that are either variable across a cohort or deleted 
+across 25-75% of it. 
+This code was addapted from the paper "Structural variation in the gut 
+microbiome associates with host health" (Zeevi, D., Korem, T., Godneva, A. et al. 
+Structural variation in the gut microbiome associates with host health. Nature 568, 43–48 (2019). https://doi.org/10.1038/s41586-019-1065-y.).
+
 
 ## Installation 
 You can install this package using the following command `pip install --no-cache-dir git+https://github.com/korem-lab/SGVFinder2.git`
@@ -21,6 +24,7 @@ You can install this package using the following command `pip install --no-cache
     - pysam (tested with 0.21.0)
     - scipy (tested with 1.11.2)
     - bokeh (tested with 3.2.2)
+    - bowtie2 (tested with 2.2.5)
 
     If you encounter issues, please try to run in an environment with these packages.
 2. It additionally requires C++ 11 and Cython installed.
@@ -28,6 +32,12 @@ You can install this package using the following command `pip install --no-cache
 ## Usage
 
 **See the workflow.ipynb for a non-parallelized simple implementation.**
+
+### Creating a database
+ICRA will run against a database of reference genomes. The database created is carried out with a single command ```CreatDB.py```. 
+The CreateDB.py command takes two arguments, the first is a directory with a single fasta file per genome and the second arguments is the prefix for the created database.
+Please note that only accepted file extensions are ```.fasta```, ```.fa``` and ```.fa.gz```. 
+Following the successfull run of this command the final fasta file should also be made into a bowtie2 index with the command ```bowtie2-build <db_prefix>.fasta <db_prefix>```
 
 There are two main algorithms here - ICRA and SGVFinder.
 
