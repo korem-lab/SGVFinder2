@@ -6,7 +6,7 @@ from scipy.stats.stats import spearmanr
 from os.path import exists
 from pandas import read_pickle, to_pickle, DataFrame, concat, Series
 import numpy as np
-from os.path import basename, join, splitext
+from os.path import basename, join, splitext, isdir
 import logging
 from collections import defaultdict
 from glob import glob
@@ -68,7 +68,7 @@ def get_sample_map(
                 print('why is this happening')
     return {dest_id: cov_map.tolist() for dest_id, cov_map in bacid_maps.items()
             if np.median(cov_map) >= rate_param}
-
+  
 
 def calculate_by_other(old_deldf_p, old_sgvdf_p, old_frames_df, samp_to_map, real_del_thresh, dense_perc, weboutputdir,
                        x_coverage, rate_param, taxonomypath, genepospath):
@@ -191,11 +191,11 @@ def work_on_collection(
         vsgv_dense_perc=85,
         browser_path=None,
         taxonomypath=None,
-        genepospat=None,
+        genepospath=None,
         frames_path=None
     ):
-    if isinstance(samp_to_map,str) and os.path.isdir(samp_to_map):
-        sample_map_files = glob.glob(f"{samp_to_map}/*.smp")
+    if isinstance(samp_to_map,str) and isdir(samp_to_map):
+        sample_map_files = glob(f"{samp_to_map}/*.smp")
         print('Found %s finished samples...'%len(sample_map_files))
 
         samp_to_map = {basename(s).split('.smp')[0]:read_pickle(s) for s in sample_map_files}
