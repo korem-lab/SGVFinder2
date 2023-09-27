@@ -8,24 +8,26 @@ This code was used for the paper "Structural variation in the gut
 microbiome associates with host health", TBP. 
 
 ## Installation 
-You can install this package using the following command `pip install git+https://github.com/korem-lab/SGVFinder2.git`
+You can install this package using the following command `pip install --no-cache-dir git+https://github.com/korem-lab/SGVFinder2.git`
 
 ## Requirements
 
-1. This code was written and tested on python 2.7.8, and requires the following packages:
-    - numpy (tested with 1.14.2)
-    - biopython (tested with 1.68)
-    - ujson (tested with 1.35)
-    - pandas (tested with 0.23.4)
-    - scipy (tested with 1.1.0)
-    - bokeh (tested with 0.12.6)
+1. This package has the following dependencies:
+    - python (tested with 3.10.12)
+    - numpy (tested with 1.26.0)
+    - pandas (tested with 2.1.0)
+    - Cython (tested with 3.0.2)
+    - ujson (tested with 5.8.0)
+    - pysam (tested with 0.21.0)
+    - scipy (tested with 1.11.2)
+    - bokeh (tested with 3.2.2)
 
-    If you encounter issues, please try to run in an environment with
-    these packages.
-2. It additionally requires c++ 11 and cython installed.
+    If you encounter issues, please try to run in an environment with these packages.
+2. It additionally requires C++ 11 and Cython installed.
     
-
 ## Usage
+
+**See the workflow.ipynb for a non-parallelized simple implementation.**
 
 There are two main algorithms here - ICRA and SGVFinder.
 
@@ -58,6 +60,3 @@ glob string with the command-line wrapper.
 
 **NOTE:** SGVFinder WILL NOT work on a single sample. If you have a small 
 cohort we recommend changing the ```min_samp_cutoff``` (min=2) or running with ```--byorig```.
-
-
-**See the linear_example.py for a non-parallelized simple implementation.**

@@ -1,14 +1,6 @@
-from setuptools import setup, find_packages, Command
-from setuptools.command.develop import develop
-from setuptools.command.install import install
-from setuptools.command.egg_info import egg_info
-import atexit, os, sys
-
+from setuptools import setup, find_packages
 from distutils.core import setup, Extension
 from Cython.Distutils import build_ext
-import shutil
-import numpy as np
-from glob import glob
 
 ext_modules = [
     Extension("Delta", ["SGVFinder2/helpers/Delta.pyx"]),
@@ -26,8 +18,8 @@ setup(
     install_requires=[
         "numpy",
         "pandas",
+        "Cython",
         "ujson",
-        "cython",
         "pysam",
         "scipy",
         "bokeh"
@@ -40,3 +32,4 @@ setup(
     cmdclass={'build_ext': build_ext},
     ext_modules=ext_modules
 )
+

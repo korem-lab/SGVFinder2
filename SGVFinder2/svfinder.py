@@ -174,6 +174,12 @@ def work_on_collection(samp_to_map, max_spacing, min_samp_cutoff, delsdetectthre
                        vsgv_dissim_thresh, vsgv_clip_quantile, vsgv_fit_interval, vsgv_fit_method,
                        x_coverage, rate_param, vsgv_dense_perc, browser_path, taxonomypath, genepospath,
                        frames_path=None):
+    if isinstance(samp_to_map,str) and os.path.isdir(samp_to_map):
+        sample_map_files = glob.glob(f"{samp_to_map}/*.smp")
+        print('Found %s finished samples...'%len(sample_map_files))
+
+        samp_to_map = {basename(s).split('.smp')[0]:read_pickle(s) for s in sample_map_files}
+
     binsize = int(rate_param / float(x_coverage))
     dichotomize = True
     dichotomize_thresh = 0.5
@@ -323,7 +329,7 @@ def find_deletions(df_in, bacname, dichotomize, dichotomize_thresh, detectthresh
     deltn = (~df.le(dip, axis=0)).astype(int)
 
     def getpercdel(s0, s1):
-        return (~deltn.iloc[:, s0:s1].any(1)).sum() / float(len(deltn))
+        return (~deltn.iloc[:, s0:s1].any(axis=1)).sum() / float(len(deltn))
 
     def getpercret(s0, s1):
         return deltn.iloc[:, s0:s1].all(1).sum() / float(len(deltn))

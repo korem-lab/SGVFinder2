@@ -13,7 +13,8 @@ from .helpers.sam2pmp import sam2pmp, SourceReadSAM
 import gzip
 # from Utils import shell_command
 log_ = logging.getLogger('ICRA')
-
+from pathlib import Path
+import os
 
 def get_ujson_splitting_point(delta):
     no_aln = 0
@@ -30,11 +31,39 @@ def get_ujson_splitting_point(delta):
             return index
 
 
-def single_file(fq1, fq2, outfol, max_mismatch, consider_lengths, epsilon,
-                max_iterations, min_bins=4, max_bins=100,
-                min_reads=5, dense_region_coverage=60, length_minimum=300,
-                length_maximum=1e6, dbpath=None, use_theta=False, threads=1, senspreset=MapPreset.SENSITIVE,
-                report_alns=20, max_ins=750):
+def single_file(
+        fq1, fq2, 
+        outfol=os.getcwd(),
+        max_mismatch=8,
+        consider_lengths=True,
+        epsilon=1e-6,
+        max_iterations=100,
+        min_bins=10,
+        max_bins=100,
+        min_reads=100, 
+        dense_region_coverage=60, 
+        length_minimum=1e5,
+        length_maximum=2e7, 
+        dbpath=None, 
+        use_theta=False, 
+        threads=1, 
+        senspreset=MapPreset.VERY_SENSITIVE,
+        report_alns=20, 
+        max_ins=750
+    ):
+    if not os.path.exists(outfol):
+        print('Creating directory %s...'%outfol)
+        Path(outfol).mkdir(parents=True, exist_ok=True)
+
+    if fq2 is None:
+        print('Running ICRA on single-end read!')
+        print('Single-',fq1)
+    else:
+        print('Running ICRA on paired-end reads!')
+        print('Forward-',fq1)
+        print('Reverse-',fq2)
+    print('--------------------------------------------\n')
+
     log_.debug('Loading database...')
     length_db_f, indexf, dest_dictf, dlen_db_f = dbpath + '.lengths', dbpath, dbpath + '.dests', dbpath + '.dlen'
     outpref = join(outfol,
@@ -48,6 +77,9 @@ def single_file(fq1, fq2, outfol, max_mismatch, consider_lengths, epsilon,
     #AYA added Feb 2022
     if not exists(outpref + '.bam'):
         do_pair_simple(fq1, fq2, outpref, indexf, senspreset, report_alns, max_ins, threads)
+    else:
+        print('%s already exists, skipping mapping step...'%(outpref + '.bam'))
+
     #do_pair_simple(fq1, fq2, outpref, indexf, senspreset, report_alns, max_ins, threads)
     log_.debug('Mapped. Converting to pmp')
     if not exists(outpref + '.pmp'):
@@ -76,34 +108,33 @@ def single_file(fq1, fq2, outfol, max_mismatch, consider_lengths, epsilon,
         print('this is the len of delta:')
         print(len(delta_new))
 
-        with gzip.open(join(outfol, outpref + '.jspi'), 'wt') as of:
+        with gzip.open(outpref + '.jspi', 'wt') as of:
             ujson.dump(pi, of)
         #half = get_ujson_splitting_point(delta_new)
         half = int(len(delta_new)/2)
         twenieth = int(len(delta_new)/20)
-        if len(delta_new) > 50: #50000000:
+        # if len(delta_new) > 50: #50000000:
 
-            lst1 = delta_new[0:half] # first half
-            print(1, len(lst1))
-            with gzip.open(join(outfol, outpref + '_1.jsdel'), 'wt') as of:
-                ujson.dump([average_read_length, lst1], of)
+        #     lst1 = delta_new[0:half] # first half
+        #     print(1, len(lst1))
+        #     with gzip.open(outpref + '_1.jsdel', 'wt') as of:
+        #         ujson.dump([average_read_length, lst1], of)
 
-            start = half
-            for num in range(2,12):
-                if num == 11 :
-                    lst = delta_new[start:]
-                    print(num, len(lst))
-                else:
-                    lst = delta_new[start: start+twenieth]
-                    print(num, len(lst))
-                with gzip.open(join(outfol, outpref + f'_{num}.jsdel'), 'wt') as of:
-                    ujson.dump([average_read_length, lst], of)
-                start += twenieth
+        #     start = half
+        #     for num in range(2,12):
+        #         if num == 11 :
+        #             lst = delta_new[start:]
+        #             print(num, len(lst))
+        #         else:
+        #             lst = delta_new[start: start+twenieth]
+        #             print(num, len(lst))
+        #         with gzip.open(outpref + f'_{num}.jsdel', 'wt') as of:
+        #             ujson.dump([average_read_length, lst], of)
+        #         start += twenieth
 
-
-        else:
-            with gzip.open(join(outfol, outpref + '.jsdel'), 'wt') as of:
-                ujson.dump([average_read_length, delta_new], of)
+        # else:
+        with gzip.open(outpref + '.jsdel', 'wt') as of:
+            ujson.dump([average_read_length, delta_new], of)
         return outpref + '.jspi', outpref + '.jsdel'
     else:
         return outpref + '.jspi', outpref + '.jsdel'
