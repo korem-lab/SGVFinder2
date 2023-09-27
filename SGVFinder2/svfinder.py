@@ -22,7 +22,12 @@ import gzip
 log_ = logging.getLogger('SGVF')
 
 
-def get_sample_map(delta_fname, x_coverage, rate_param, lengthdbpath):
+def get_sample_map(
+        delta_fname,
+        lengthdbpath,
+        x_coverage=0.01,
+        rate_param=10
+    ):
     lengthdb = read_pickle(lengthdbpath)
     bin_size = int(rate_param / float(x_coverage))
 
@@ -170,10 +175,25 @@ def collect_from_flist(deltaflist, q, dist_reads, x_coverage, average_read_lengt
     to_pickle(samp_to_map, outp)
 
 
-def work_on_collection(samp_to_map, max_spacing, min_samp_cutoff, delsdetectthresh, real_del_thresh, dels_cooc_thresh,
-                       vsgv_dissim_thresh, vsgv_clip_quantile, vsgv_fit_interval, vsgv_fit_method,
-                       x_coverage, rate_param, vsgv_dense_perc, browser_path, taxonomypath, genepospath,
-                       frames_path=None):
+def work_on_collection(
+        samp_to_map, 
+        max_spacing=10,
+        min_samp_cutoff=2,
+        delsdetectthresh=0.25,
+        real_del_thresh=0.95,
+        dels_cooc_thresh=0.25,
+        vsgv_dissim_thresh=0.125,
+        vsgv_clip_quantile=0.02,
+        vsgv_fit_interval=0.95,
+        vsgv_fit_method='betaprime',
+        x_coverage=0.01,
+        rate_param=10,
+        vsgv_dense_perc=85,
+        browser_path=None,
+        taxonomypath=None,
+        genepospat=None,
+        frames_path=None
+    ):
     if isinstance(samp_to_map,str) and os.path.isdir(samp_to_map):
         sample_map_files = glob.glob(f"{samp_to_map}/*.smp")
         print('Found %s finished samples...'%len(sample_map_files))
