@@ -1,6 +1,6 @@
 # ICRA and SGVFinder
 
-This code first mapps reads to a reference database of the choice (see below for details). 
+This code first maps reads to a reference database of the choice. 
 ICRA then corrects read assignments by coverage, based on re-distribution
 of ambiguously mapped reads. The corrected assignments are used to detect
 structural variants that are either variable across a cohort or deleted 
