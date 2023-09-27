@@ -21,6 +21,7 @@ You can install this package using the following command `pip install --no-cache
     - pysam (tested with 0.21.0)
     - scipy (tested with 1.11.2)
     - bokeh (tested with 3.2.2)
+    - Bio (tested with 1.5.9)
 
     If you encounter issues, please try to run in an environment with these packages.
 2. It additionally requires C++ 11 and Cython installed.

@@ -22,7 +22,8 @@ setup(
         "ujson",
         "pysam",
         "scipy",
-        "bokeh"
+        "bokeh",
+        "Bio"
     ],
     python_requires=">=3",
     license="Apache-2.0",
