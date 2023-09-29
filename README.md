@@ -1,13 +1,10 @@
 # ICRA and SGVFinder
 
-This code first maps reads to a reference database of the choice. 
-ICRA then corrects read assignments by coverage, based on re-distribution
-of ambiguously mapped reads. The corrected assignments are used to detect
-structural variants that are either variable across a cohort or deleted 
-across 25-75% of it. 
-This code was addapted from the paper "Structural variation in the gut 
-microbiome associates with host health" (Zeevi, D., Korem, T., Godneva, A. et al. 
-Structural variation in the gut microbiome associates with host health. Nature 568, 43–48 (2019). https://doi.org/10.1038/s41586-019-1065-y.).
+This is a revised version of SGVFinder (https://github.com/segalab/SGVFinder). We replace the GEM Mapper with Bowtie2, fixed multiple bugs, and added methods for creating a custom database. 
+This code first maps reads to a reference database of the choice. ICRA then corrects read assignments by coverage, based on re-distribution of ambiguously mapped reads. The corrected assignments are used to detect
+structural variants that are either variable across a cohort or deleted across 25-75% of it. 
+
+This code was addapted from the paper "Structural variation in the gut microbiome associates with host health" (Zeevi, D., Korem, T., Godneva, A. et al. Structural variation in the gut microbiome associates with host health. Nature 568, 43–48 (2019). https://doi.org/10.1038/s41586-019-1065-y.).
 
 
 ## Installation 
