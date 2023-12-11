@@ -68,3 +68,7 @@ glob string with the command-line wrapper.
 
 **NOTE:** SGVFinder WILL NOT work on a single sample. If you have a small 
 cohort we recommend changing the ```min_samp_cutoff``` (min=2) or running with ```--byorig```.
+
+### CLI
+
+Both ICRA and SVFinder can be run from the command line. Run `svfiner --help` and `icra --help` to see command-line options.
