@@ -31,6 +31,9 @@ setup(
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     cmdclass={'build_ext': build_ext},
-    ext_modules=ext_modules
+    ext_modules=ext_modules,
+    entry_points = {
+        'console_scripts': ['icra=SGVFinder2.cli.icra_cli:main','svfinder=SGVFinder2.cli.svfinder_cli:main'],
+    },
 )
 
