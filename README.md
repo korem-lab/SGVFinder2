@@ -72,3 +72,9 @@ cohort we recommend changing the ```min_samp_cutoff``` (min=2) or running with `
 ### CLI
 
 SGVFinder offers several built-in commands to help run each step through a command line environment:
+
+- ```icra <args>``` runs ICRA's `single_file` command
+- ```svfinder get_sample_map <args>``` runs SVFinder's `get_sample_map` command
+- ```svfinder work_on_collection <args>``` runs SVFinder's `work_on_collection` command
+
+Note, you will need to install this package using `pip install` in order for these commands to work.
