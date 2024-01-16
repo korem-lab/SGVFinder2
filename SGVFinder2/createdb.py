@@ -1,12 +1,10 @@
 import argparse
+import logging
+from pandas import to_pickle
 from collections import defaultdict
 from glob import glob
 from os.path import join, basename, splitext
 from Bio import SeqIO
-import logging
-
-from pandas import to_pickle
-
 from .helpers.ICRAUtils import _open_gz_indif, _set_logging_handlers
 
 log_ = logging.getLogger()

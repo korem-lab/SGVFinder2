@@ -1,3 +1,8 @@
+import logging
+import ujson
+import gzip
+import numpy as np 
+import bokeh.plotting as bpl
 from scipy.stats._continuous_distns import norm, betaprime, ncx2
 from itertools import combinations, product
 from scipy.spatial.distance import pdist, squareform
@@ -5,22 +10,16 @@ from scipy.cluster.hierarchy import linkage, fcluster
 from scipy.stats.stats import spearmanr
 from os.path import exists
 from pandas import read_pickle, to_pickle, DataFrame, concat, Series
-import numpy as np
 from os.path import basename, join, splitext, isdir
-import logging
 from collections import defaultdict
 from glob import glob
-import ujson
-import bokeh.plotting as bpl
-from os.path import split, realpath
 from bokeh.layouts import column
 from bokeh.models.sources import ColumnDataSource
 from bokeh.models.tools import HoverTool, TapTool
 from bokeh.models.ranges import Range1d
 from bokeh.models.callbacks import OpenURL
-import gzip
-log_ = logging.getLogger('SGVF')
 
+log_ = logging.getLogger('SGVF')
 
 def get_sample_map(
         delta_fname,
@@ -522,8 +521,3 @@ def draw_one_region(bacname, binsize, taxonomy, normdf,
             bpl.save(column(p1, ))
         else:
             bpl.save(column(p1, p2))
-
-#
-# lengthdbpath = join(split(realpath(__file__))[0], '../DataFiles/representatives.contigs.drepped.dlen')
-# taxonomypath = join(split(realpath(__file__))[0], '../DataFiles/representatives.genomes.taxonomy.df')
-# genepospath = join(split(realpath(__file__))[0], '../DataFiles/representatives.genes.drepped.annotations.df')

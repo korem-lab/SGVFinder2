@@ -33,7 +33,9 @@ setup(
     cmdclass={'build_ext': build_ext},
     ext_modules=ext_modules,
     entry_points = {
-        'console_scripts': ['icra=SGVFinder2.cli.icra_cli:main','svfinder=SGVFinder2.cli.svfinder_cli:main'],
+        'console_scripts': ['icra=SGVFinder2.cli.icra_cli:run',
+                            'svfinder=SGVFinder2.cli.svfinder_cli:run'
+                            ],
     },
 )
 

@@ -68,3 +68,7 @@ glob string with the command-line wrapper.
 
 **NOTE:** SGVFinder WILL NOT work on a single sample. If you have a small 
 cohort we recommend changing the ```min_samp_cutoff``` (min=2) or running with ```--byorig```.
+
+### CLI
+
+SGVFinder offers several built-in commands to help run each step through a command line environment:

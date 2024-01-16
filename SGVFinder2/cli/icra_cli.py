@@ -34,28 +34,31 @@ args = parser.parse_args()
 logging.basicConfig(level=(logging.DEBUG if args.debug else logging.INFO),
                     format='%(asctime)s-%(levelname)s: %(message)s')
 logging.debug(args)
-jspi_file, jsdel_file = single_file(
-    fq1= args.fq1,
-    fq2 = args.fq2,
-    outfol=args.outfol,
-    max_mismatch=args.max_mismatch,
-    consider_lengths=args.consider_lengths,
-    epsilon=args.epsilon,
-    max_iterations=args.max_iterations,
-    min_bins=args.min_bins,
-    max_bins=args.max_bins,
-    min_reads=args.min_reads,
-    dense_region_coverage=args.dense_region_coverage,
-    length_minimum=args.length_minimum,
-    length_maximum=args.length_maximum,
-    dbpath=args.db,
-    use_theta=args.use_theta,
-    threads=args.threads,
-    senspreset=args.sensitivity,
-    report_alns=args.report_alignments,
-    max_ins=args.max_ins
-)
-print('Finished running ICRA, saving results to %s'%args.outfol)
-print('Running `get_sample_map` on %s, output will be saved to'%(jsdel_file,jsdel_file.replace('.jsdel','.smp')))
-sample_map = get_sample_map(jsdel_file,args.db+'.dlen',args.x_coverage, args.rate_param) 
-to_pickle(sample_map,jsdel_file.replace('.jsdel','.smp'))
+
+def run():
+    print('Running ICRA `single_file` command...')
+    jspi_file, jsdel_file = single_file(
+        fq1= args.fq1,
+        fq2 = args.fq2,
+        outfol=args.outfol,
+        max_mismatch=args.max_mismatch,
+        consider_lengths=args.consider_lengths,
+        epsilon=args.epsilon,
+        max_iterations=args.max_iterations,
+        min_bins=args.min_bins,
+        max_bins=args.max_bins,
+        min_reads=args.min_reads,
+        dense_region_coverage=args.dense_region_coverage,
+        length_minimum=args.length_minimum,
+        length_maximum=args.length_maximum,
+        dbpath=args.db,
+        use_theta=args.use_theta,
+        threads=args.threads,
+        senspreset=args.sensitivity,
+        report_alns=args.report_alignments,
+        max_ins=args.max_ins
+    )
+    print('Finished running ICRA, saving results to %s'%args.outfol)
+    print('Running `get_sample_map` on %s, output will be saved to %s'%(jsdel_file,jsdel_file.replace('.jsdel','.smp')))
+    sample_map = get_sample_map(jsdel_file,args.db+'.dlen',args.x_coverage, args.rate_param) 
+    to_pickle(sample_map,jsdel_file.replace('.jsdel','.smp'))

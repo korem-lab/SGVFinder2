@@ -1,20 +1,22 @@
-from glob import glob
-from os.path import join, basename, exists
 import logging
+import ujson
+import gzip
+import os
 import numpy as np
+from pathlib import Path
+from os.path import join, basename, exists
+from pandas import read_pickle
 from datetime import datetime
 from collections import defaultdict
 from .helpers.Bowtie2WrapperSlim import do_pair_simple, MapPreset
-from .helpers.ICRAUtils import timeit, _open_gz_indif, _tryrm
-from pandas import read_pickle, DataFrame
-import ujson
+from .helpers.ICRAUtils import timeit, _open_gz_indif
 from .helpers.ReadContainer import ReadContainer, _get_flank_size
 from .helpers.sam2pmp import sam2pmp, SourceReadSAM
-import gzip
-# from Utils import shell_command
+
 log_ = logging.getLogger('ICRA')
-from pathlib import Path
-import os
+
+GENOMES = 'genomes'
+CAMI = 'cami'
 
 def get_ujson_splitting_point(delta):
     no_aln = 0
@@ -35,7 +37,7 @@ def single_file(
         fq1, fq2, 
         outfol=os.getcwd(),
         max_mismatch=8,
-        consider_lengths=True,
+        consider_lengths=False,
         epsilon=1e-6,
         max_iterations=100,
         min_bins=10,
@@ -70,9 +72,6 @@ def single_file(
                    basename(fq1).replace('_1.fastq.gz', '').replace('_1.fastq', '').replace('.fastq.gz', '').replace(
                        '.fastq', ''))
     log_.debug('Loaded. Mapping file...')
-    #AYA - can remove this afater finished with CNIO
-    # bu_loc = '/ifs/scratch/tk2829_gp/shared/Projects/Cancer/CNIO/tmp_all_reads_jan_2022_reruns2/ICR/Backup/'
-    # shell_command(f'cp {bu_loc}{basename(outpref)}.pmp {outpref}.pmp')
 
     #AYA added Feb 2022
     if not exists(outpref + '.bam'):
@@ -281,9 +280,3 @@ def _load_iterable_fromdesc(desc):
             raise ve
     except EOFError:
         return
-
-if __name__ == '__main__':
-    print('DEBUG')
-    sam2pmp('/storage/scratch/c2b2/korem/shared/Projects/Wang/tmp2/ICR/SRR7124765.bam',
-            '/storage/scratch/c2b2/korem/shared/Projects/Wang/tmp2/ICR/SRR7124765.pmp',
-            full=True)
