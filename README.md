@@ -37,6 +37,8 @@ The createdb.py command takes two arguments, the first is a directory with a sin
 Please note that only accepted file extensions are ```.fasta```, ```.fa``` and ```.fa.gz```. 
 Following the successfull run of this command the final fasta file should also be made into a bowtie2 index with the command ```bowtie2-build <db_prefix>.fasta <db_prefix>```
 
+(Note: you can also use the default reference database published with SGVFinder1: https://github.com/segalab/SGVFinder#install)
+
 There are two main algorithms here - ICRA and SGVFinder.
 
 ### ICRA
