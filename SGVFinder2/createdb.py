@@ -18,7 +18,7 @@ def create_db_from_reps(input_path, out_prefix, single=False):
 
     log_.info('Starting...')
 
-    with open(out_prefix + '.fa', 'wt') as o_fa_h:
+    with open(out_prefix + '.fasta', 'wt') as o_fa_h:
         for f in sum((glob(join(input_path, glb)) for glb in ('*.fasta', '*.fasta.gz', '*.fa', '*.fa.gz')), list()):
             destid = splitext(basename(f.replace('.gz', '')))[0].replace(' ', '_')
             assert destid not in dlen_dict
@@ -40,8 +40,8 @@ def create_db_from_reps(input_path, out_prefix, single=False):
                         r.id = r.description
                     r.description = ''
                     dpid = r.id#description
-                    if not single:
-                        assert dpid not in lengths_dict
+                    # if not single:
+                    #     assert dpid not in lengths_dict
                     dests_dict[dpid] = (destid, dlen_dict[destid])
                     lengths_dict[dpid] = len(r)
                     if not single:
