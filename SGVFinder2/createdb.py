@@ -40,8 +40,8 @@ def create_db_from_reps(input_path, out_prefix, single=False):
                         r.id = r.description
                     r.description = ''
                     dpid = r.id#description
-                    # if not single:
-                    #     assert dpid not in lengths_dict
+                    if dpid in lengths_dict:
+                        assert lengths_dict[dpid] == len(r.seq)
                     dests_dict[dpid] = (destid, dlen_dict[destid])
                     lengths_dict[dpid] = len(r)
                     if not single:
