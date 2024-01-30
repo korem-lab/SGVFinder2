@@ -18,7 +18,7 @@ def create_db_from_reps(input_path, out_prefix, single=False):
 
     log_.info('Starting...')
 
-    with open(out_prefix + '.fasta', 'wt') as o_fa_h:
+    with open(out_prefix + '.fa', 'wt') as o_fa_h:
         for f in sum((glob(join(input_path, glb)) for glb in ('*.fasta', '*.fasta.gz', '*.fa', '*.fa.gz')), list()):
             destid = splitext(basename(f.replace('.gz', '')))[0].replace(' ', '_')
             assert destid not in dlen_dict
