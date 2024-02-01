@@ -71,6 +71,7 @@ parser_woc.add_argument('--genepos_path',
 parser_woc.add_argument('--bac_frames_path',
                     help='Optional; directory to save bacterial dataframes',
                     type=str, default=None)
+parser_woc.add_argument('--csv_output', action='store_true', help='Will output a csv instead of pandas dataframe')
 
 # GET_SAMPLE_MAP commands
 parser_gsm.add_argument('--delta_file', help = 'The ICRA .jsdel file to process')
@@ -111,11 +112,11 @@ def run():
 			frames_path=args.bac_frames_path
 		)
 		if args.csv_output:
-				vsgv.to_csv(args.output_vsgv)
-				dsgv.to_csv(args.output_dsgv)
+			vsgv.to_csv(args.output_vsgv)
+			dsgv.to_csv(args.output_dsgv)
 		else:
-				vsgv.to_pickle(args.output_vsgv)
-				dsgv.to_pickle(args.output_dsgv)
+			vsgv.to_pickle(args.output_vsgv)
+			dsgv.to_pickle(args.output_dsgv)
 	else:
 		print('Unrecognized command `%s`'%args.command)
 		print('Available commands are [`get_sample_map`,`work_on_collection`]')
