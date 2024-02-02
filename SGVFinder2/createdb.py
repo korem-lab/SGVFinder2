@@ -7,7 +7,7 @@ import logging
 
 from pandas import to_pickle
 
-from ICRAUtils import _open_gz_indif, _set_logging_handlers
+from .helpers.ICRAUtils import _open_gz_indif, _set_logging_handlers
 
 log_ = logging.getLogger()
 

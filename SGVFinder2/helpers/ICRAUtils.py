@@ -109,7 +109,6 @@ def _tryrm(f):
 def _open_gz_indif(filepath, mode = 'rt'):
     return opengz(filepath, mode) if splitext(filepath)[1] in {'.gz', '.gzip'} else open(filepath, mode)
 
-
 def _none_iter():
     while True:
         yield None
