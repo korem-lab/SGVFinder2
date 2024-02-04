@@ -47,7 +47,7 @@ def create_db_from_reps(input_path, out_prefix, single=False):
                     if not single:
                         dlen_dict[destid] += lengths_dict[dpid]
                     SeqIO.write(r, o_fa_h, 'fasta')
-    #to_pickle(dlen_dict, out_prefix + '.dlen')
+    to_pickle(dlen_dict, out_prefix + '.dlen')
     to_pickle(lengths_dict, out_prefix + '.lengths')
     to_pickle(dests_dict, out_prefix + '.dests')
     log_.info(f"Done. Please run bowtie2-build {out_prefix+'.fasta'} {out_prefix}")
