@@ -266,7 +266,7 @@ def vsgv_can_extend(st, en, nodeldf, perc, clip_q, fit_met, fit_int, cache):
 def vsgv_get_tvar_params(slen, nodeldf, perc, clip_q, fit_met, fit_int, cache):
     if slen not in cache:
         ndf = nodeldf.rolling(slen, slen, axis=1).sum().iloc[:, (slen - 1)::slen] if slen > 1 else nodeldf
-        dx = ndf.apply(dense_stats, args=(perc,), axis=1).apply(Series).rename(columns={0: 'mean', 1: 'std'})
+        dx = ndf.apply(dense_stats, args=(perc,), axis=1).apply(lambda x: Series(x, dtype='float')).rename(columns={0: 'mean', 1: 'std'})
         nnormdf = ndf.subtract(dx['mean'], axis=0) \
             .truediv(dx['std'], axis=0)
         qs = nnormdf.quantile(clip_q), nnormdf.quantile(1 - clip_q)
