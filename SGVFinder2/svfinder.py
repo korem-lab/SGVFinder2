@@ -443,9 +443,9 @@ def draw_one_region(bacname, binsize, taxonomy, normdf,
                     deldf, delregions, bacdf, sgvregions, outputdir, geneposs):
     tax = taxonomy.loc[int(bacname.split('.')[0]), 'organism'] if taxonomy is not None else bacname
     if str(tax) == 'nan': tax = bacname
-    p1 = bpl.figure(plot_width=1200, plot_height=400,
+    p1 = bpl.figure(width=1200, height=400,
                     title="{}: {} people, {} variance regions. ".format(tax, bacdf.shape[0], len(sgvregions)))
-    p3 = bpl.figure(plot_width=1200, plot_height=250, x_range=p1.x_range,
+    p3 = bpl.figure(width=1200, height=250, x_range=p1.x_range,
                     title="{} deletion regions".format(len(delregions)))
     # Variable regions
     p1.grid.grid_line_alpha = 0.3
@@ -487,7 +487,7 @@ def draw_one_region(bacname, binsize, taxonomy, normdf,
         ("Product", "@product"),
     ],
         mode='vline')
-    p2 = bpl.figure(plot_width=1200, plot_height=150, x_range=p1.x_range,
+    p2 = bpl.figure(width=1200, height=150, x_range=p1.x_range,
                     title=None, tools=[hover, 'tap'])
     p2.multi_line('xs', 'ys', line_width=4, color='color', source=source)
     url = "http://www.google.com/search?q=@gene_name"
