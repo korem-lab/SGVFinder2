@@ -35,7 +35,9 @@ You can install this package using the following command `pip install --no-cache
 ICRA will run against a database of reference genomes. The database created is carried out with a single command ```createdb.py```. 
 The createdb.py command takes two arguments, the first is a directory with a single fasta file per genome and the second arguments is the prefix for the created database.
 Please note that only accepted file extensions are ```.fasta```, ```.fa``` and ```.fa.gz```. 
-Following the successfull run of this command the final fasta file should also be made into a bowtie2 index with the command ```bowtie2-build <db_prefix>.fasta <db_prefix>```
+
+### Please note!
+Following the successfull run of this command the final fasta file should also be made into a bowtie2 index with the command ```bowtie2-build <db_prefix>.fasta <db_prefix>```. ***The code will not run without it!***
 
 (Note: you can also use the default reference database published with SGVFinder1: https://github.com/segalab/SGVFinder#install)
 
