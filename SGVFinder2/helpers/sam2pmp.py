@@ -11,6 +11,7 @@ import ujson
 import sam2pmp_helper as s2ph
 from .ICRAUtils import timeit
 
+
 log_ = logging.getLogger('sam2pmp')
 del logging
 
@@ -76,8 +77,6 @@ def _get_pe_end(aln):
 def _se_from_aln(aln, unique, full):
     qual = 1 if unique else _get_map_quality(aln)
     refname = aln.reference_name.split()[0]
-    if refname == 'SAMN02603102.565034.SAMN02603102.CP001357':
-        refname = 'SAMN02603102.565034.SAMN02603102.CP001357\t<annotation:_organism="Serpulina_phage_VSH-1"_taxon="58620"/>'
     if full:
         nm, md, asc = _get_nm_md_as(aln)
         return DestMap_se(refname, nm, _get_strand(aln), aln.pos,
@@ -129,7 +128,7 @@ class SourceReadSAM(object):
     def from_alngroup(cls, alngrp, full):
         fst = alngrp[0]
         res = cls(fst.query_name, [fst.query_sequence], [fst.query_qualities.tolist()], full)
-        read1 = None
+        read1, read2 = None, None
         seen_read1 = fst.is_read1
         seen_read2 = fst.is_read2
         unique = (len(alngrp) == 1) \
@@ -143,16 +142,23 @@ class SourceReadSAM(object):
                 res.seq.append(aln.query_sequence)
                 res.quals.append(aln.query_qualities.tolist())
                 seen_read2 = True
-            if aln.is_proper_pair:
+            if aln.is_paired:
                 if aln.is_read1:
                     read1 = aln
                 elif aln.is_read2:
-                    assert (read1.reference_name == aln.reference_name) \
-                           and (read1.is_reverse ^ aln.is_reverse)
-                    res.pe_maps.append(_pe_from_aln(read1, aln, unique, full))
-                    read1 = None
+                    read2 = aln
                 else:
                     raise RuntimeError('huh?')
+                if read1 is not None and read2 is not None:
+                    if aln.is_proper_pair:
+                        assert (read1.reference_name == read2.reference_name) \
+                            and (read1.is_reverse ^ read2.is_reverse)
+                        res.pe_maps.append(_pe_from_aln(read1, read2, unique, full))
+                    else:
+                        res.se_maps.append(_se_from_aln(read1, unique, full))
+                        res.se_maps.append(_se_from_aln(read2, unique, full))
+                    read1, read2 = None, None
+                
             else:
                 if not aln.is_unmapped:
                     res.se_maps.append(_se_from_aln(aln, unique, full))

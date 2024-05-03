@@ -73,13 +73,11 @@ def single_file(
                        '.fastq', ''))
     log_.debug('Loaded. Mapping file...')
 
-    #AYA added Feb 2022
     if not exists(outpref + '.bam'):
         do_pair_simple(fq1, fq2, outpref, indexf, senspreset, report_alns, max_ins, threads)
     else:
         print('%s already exists, skipping mapping step...'%(outpref + '.bam'))
 
-    #do_pair_simple(fq1, fq2, outpref, indexf, senspreset, report_alns, max_ins, threads)
     log_.debug('Mapped. Converting to pmp')
     if not exists(outpref + '.pmp'):
         sam2pmp(outpref + '.bam', outpref + '.pmp', full=True)
