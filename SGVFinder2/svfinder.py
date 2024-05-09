@@ -436,7 +436,10 @@ def _cooc_dissim(v, u):
 
 
 def _spearman_dissim(v, u):
-    return 1 - ((spearmanr(v, u)[0] + 1) / 2)
+    correlation, _ = spearmanr(v, u, nan_policy='omit')
+    if np.isnan(correlation):
+        correlation = 0
+    return 1 - ((correlation + 1) / 2)
 
 
 def draw_one_region(bacname, binsize, taxonomy, normdf,
