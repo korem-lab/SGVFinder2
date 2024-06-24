@@ -462,11 +462,11 @@ def draw_one_region(bacname, binsize, taxonomy, normdf,
                 p1.vbar(s[0] + (s[1] - s[0]) / 2. - .5, s[1] - s[0] - .5, dfmax, dfmin,
                         color='DarkBlue', alpha=0.2)
     drawdf = DataFrame({i: normdf[i] if i in normdf.columns else np.nan for i in bacdf.columns})
-    p1.line(range(drawdf.shape[1]), drawdf.quantile(0.01), color='Black', alpha=.7)
-    p1.line(range(drawdf.shape[1]), drawdf.quantile(0.25), color='Black', alpha=1)
-    p1.line(range(drawdf.shape[1]), drawdf.median(), color='Black', alpha=1, line_width=2.5)
-    p1.line(range(drawdf.shape[1]), drawdf.quantile(0.75), color='Black', alpha=1)
-    p1.line(range(drawdf.shape[1]), drawdf.quantile(0.99), color='Black', alpha=.7)
+    p1.line(list(range(drawdf.shape[1]), drawdf.quantile(0.01), color='Black', alpha=.7))
+    p1.line(list(range(drawdf.shape[1]), drawdf.quantile(0.25), color='Black', alpha=1))
+    p1.line(list(range(drawdf.shape[1]), drawdf.median(), color='Black', alpha=1, line_width=2.5))
+    p1.line(list(range(drawdf.shape[1]), drawdf.quantile(0.75), color='Black', alpha=1))
+    p1.line(list(range(drawdf.shape[1]), drawdf.quantile(0.99), color='Black', alpha=.7))
     # Gene positions
     if geneposs is not None:
         locgeneposs = geneposs.loc[bacname]
@@ -515,7 +515,7 @@ def draw_one_region(bacname, binsize, taxonomy, normdf,
                     p3.vbar(d[0] + (d[1] - d[0]) / 2. - .5, d[1] - d[0] - .5, 1.5, 0,
                             color='ForestGreen', alpha=0.5)
         a = 1 - deldf.sum(0).truediv(deldf.count(0))
-        p3.line(range(len(a)), a.values, color='FireBrick', alpha=1, line_width=2.5)
+        p3.line(list(range(len(a)), a.values, color='FireBrick', alpha=1, line_width=2.5))
         # Output
         bpl.output_file(join(outputdir, bacname + '.html'),
                         title=tax)
