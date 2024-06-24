@@ -467,37 +467,41 @@ def draw_one_region(bacname, binsize, taxonomy, normdf,
     p1.line(range(drawdf.shape[1]), drawdf.median(), color='Black', alpha=1, line_width=2.5)
     p1.line(range(drawdf.shape[1]), drawdf.quantile(0.75), color='Black', alpha=1)
     p1.line(range(drawdf.shape[1]), drawdf.quantile(0.99), color='Black', alpha=.7)
-    locgeneposs = geneposs.loc[bacname]
-    locgeneposs = locgeneposs[~locgeneposs.isnull().any(1)]
-    noise = norm.rvs(0, 0.75, size=len(locgeneposs))
-    source = ColumnDataSource(data=dict(
-        x=locgeneposs[['start_pos', 'end_pos']].mean(1).truediv(binsize).values,
-        xs=list(zip(locgeneposs['start_pos'].truediv(binsize).values, locgeneposs['end_pos'].truediv(binsize).values)),
-        y=locgeneposs['strand'].replace({'+': 2, '-': -2}),
-        ys=list(zip(locgeneposs['strand'].replace({'+': 2, '-': -2}).add(noise),
-               locgeneposs['strand'].replace({'+': 2, '-': -2}).add(noise))),
-        start=locgeneposs.start_pos.apply(int).apply(str).values,
-        end=locgeneposs.end_pos.apply(int).apply(str).values,
-        strand=locgeneposs.strand.values,
-        gene_name=locgeneposs.index.values,
-        product=locgeneposs['product'].values,
-        gene_type=locgeneposs['gene_type'].values,
-        color=locgeneposs['gene_type'].apply(lambda x: 'DarkRed' if x == 'CDS' else 'DodgerBlue' if x == 'rRNA' else 'Yellow' if x == 'tRNA' else 'Gray').values))
-    hover = HoverTool(tooltips=[
-        ("Gene name", "@gene_name"),
-        ("Position", "@start - @end (@strand)"),
-        ("Gene type", "@gene_type"),
-        ("Product", "@product"),
-    ],
-        mode='vline')
-    p2 = bpl.figure(width=1200, height=150, x_range=p1.x_range,
-                    title=None, tools=[hover, 'tap'])
-    p2.multi_line('xs', 'ys', line_width=4, color='color', source=source)
-    url = "http://www.google.com/search?q=@gene_name"
-    taptool = p2.select(type=TapTool)
-    taptool.callback = OpenURL(url=url)
-    p2.yaxis.axis_label = 'Genes'
-    p2.y_range = Range1d(-5, 5)
+    # Gene positions
+    if geneposs is not None:
+        locgeneposs = geneposs.loc[bacname]
+        locgeneposs = locgeneposs[~locgeneposs.isnull().any(1)]
+        noise = norm.rvs(0, 0.75, size=len(locgeneposs))
+        source = ColumnDataSource(data=dict(
+            x=locgeneposs[['start_pos', 'end_pos']].mean(1).truediv(binsize).values,
+            xs=list(zip(locgeneposs['start_pos'].truediv(binsize).values, locgeneposs['end_pos'].truediv(binsize).values)),
+            y=locgeneposs['strand'].replace({'+': 2, '-': -2}),
+            ys=list(zip(locgeneposs['strand'].replace({'+': 2, '-': -2}).add(noise),
+                locgeneposs['strand'].replace({'+': 2, '-': -2}).add(noise))),
+            start=locgeneposs.start_pos.apply(int).apply(str).values,
+            end=locgeneposs.end_pos.apply(int).apply(str).values,
+            strand=locgeneposs.strand.values,
+            gene_name=locgeneposs.index.values,
+            product=locgeneposs['product'].values,
+            gene_type=locgeneposs['gene_type'].values,
+            color=locgeneposs['gene_type'].apply(lambda x: 'DarkRed' if x == 'CDS' else 'DodgerBlue' if x == 'rRNA' else 'Yellow' if x == 'tRNA' else 'Gray').values))
+        hover = HoverTool(tooltips=[
+            ("Gene name", "@gene_name"),
+            ("Position", "@start - @end (@strand)"),
+            ("Gene type", "@gene_type"),
+            ("Product", "@product"),
+        ],
+            mode='vline')
+        p2 = bpl.figure(width=1200, height=150, x_range=p1.x_range,
+                        title=None, tools=[hover, 'tap'])
+        p2.multi_line('xs', 'ys', line_width=4, color='color', source=source)
+        url = "http://www.google.com/search?q=@gene_name"
+        taptool = p2.select(type=TapTool)
+        taptool.callback = OpenURL(url=url)
+        p2.yaxis.axis_label = 'Genes'
+        p2.y_range = Range1d(-5, 5)
+    else:
+        p2 = None
     # Deletions
     if p3 is not None:
         p3.xaxis.axis_label = 'Bin position'
