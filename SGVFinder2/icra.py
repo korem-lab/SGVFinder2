@@ -93,10 +93,10 @@ def single_file(
     #_tryrm(outpref + '.bam')
     log_.debug('PMP ready. Running ICRA...')
     #if not exists('delta_new_for_debug.pkl'):
-    if not exists(outpref + '_1.jsdel'):
+    if not exists(outpref + '.jsdel'):
 
         read_container, pi, theta1, average_read_length, lengthdb = \
-            _initialize(fq1, fq2, outpref + '.pmp', dlen_db_f, max_mismatch, consider_lengths, length_minimum,
+            _initialize(fq1, fq2, pmppref + '.pmp', dlen_db_f, max_mismatch, consider_lengths, length_minimum,
                         length_maximum,
                         min_reads, min_bins, max_bins, dense_region_coverage, dest_dictf, use_theta)
         if len(pi) == 0:
