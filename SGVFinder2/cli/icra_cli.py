@@ -54,12 +54,11 @@ def run():
     pmpfol = args.pmpfol
     file_basename = basename(fq1).replace('_1.fastq.gz', '').replace('_1.fastq', '').replace('.fastq.gz', '').replace(
             '.fastq', '').replace('_1.fq.gz', '').replace('_1.fq', '').replace('.fq.gz', '').replace('.fq', '')
-    bampref = join(bamfol, file_basename) 
-    pmppref = join(pmpfol, file_basename) 
+    bampref = join(bamfol, file_basename)
     if args.generate_bam:
         print('Running ICRA `generate_bam` command...')
         do_pair_simple(fq1, fq2, bampref, 
-                       dbpath = args.db, 
+                       indexf = args.db, 
                        senspreset=args.sensitivity, 
                        report_alns=args.report_alignments, 
                        max_ins=args.max_ins, 
@@ -67,6 +66,7 @@ def run():
         print('Mapped. BAM ready')
     elif args.bam_to_pmp:
         print('Running ICRA `bam_to_pmp` command...')
+        pmppref = join(pmpfol, file_basename) 
         if exists(bampref + '.bam'):
             print('%s exists, converting to pmp...'%(bampref + '.bam'))
             sam2pmp(bampref + '.bam', pmppref + '.pmp', full=True)
