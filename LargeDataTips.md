@@ -12,12 +12,12 @@ The ICRA algorithm can be broken down into four steps in the view of generating 
 *The `icra` command includes `svfinder get_sample_map` which generates smp files*
 
 When using the `icra` command on large datasets with a large reference database, significant time and memory are required.
-By seperating those steps above and utilizing parallel computing, the process can be expedited.
+By separating those steps above and utilizing parallel computing, the process can be expedited.
 However, considering the CPU core count, disk storage space, and memory size of the computer or server, each step requires different setting.
 The arguments `bamfol` and `pmpfol` allow files to be distributed separately.
 Here is an example demonstrating the whole ICRA algorithm (*30G reference database*).
 
-| No. | Files | Multi-threads | Memoery Usage |  Time Usage|File size (Example) |
+| No. | Files | Multi-threads | Memory Usage |  Time Usage|File size (Example) |
 |---|---|---|---|---|---|
 |0|fastq|-|-|-|16G|
 |1|fastq -> bam|Yes|-|-|8.3G|
@@ -50,7 +50,7 @@ With the argument `--bam_to_pmp`, the `icra` command will only convert bam files
 With the bam and pmp files available and their paths properly specified, the `icra` command will bypass step 1-2 and continue to generate jsdel files.
 Step 3 consumes a large amount of memory (30GB-100G for 16Gfastq) and considerable time (3min-20ming per iteration for 16Gfastq, 4h-2days total) with the default argument (epsilon=1e-6,
 max_iterations=100).
-Step 4 is the same as `svfinder get_sample_map`, which consumes large memory but not much time. So it is not necessary to seperate step 4 from step 3.
+Step 4 is the same as `svfinder get_sample_map`, which consumes large memory but not much time. So it is not necessary to separate step 4 from step 3.
 
 ## Conclusion
 
