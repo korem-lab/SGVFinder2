@@ -59,10 +59,10 @@ def single_file(
         Path(outfol).mkdir(parents=True, exist_ok=True)
 
     if bamfol is None:
-        bamfol = outpref
+        bamfol = outfol
 
     if pmpfol is None:
-        pmpfol = outpref
+        pmpfol = outfol
 
     if fq2 is None:
         print('Running ICRA on single-end read!')
