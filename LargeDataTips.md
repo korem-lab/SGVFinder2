@@ -54,9 +54,9 @@ Step 4 is the same as `svfinder get_sample_map`, which consumes large memory but
 
 ## Conclusion
 
-Step 1 can utilize multiple threads and/or analyze multiple samples concurrently. Step 2 can analyze multiple samples concurrently.
+Step 1 can utilize multiple threads and/or analyze multiple samples concurrently. Step 2 can analyze multiple samples concurrently, using `rush` or `parallel`
 This makes full use of the computer or server resources and shortens the analysis time.
-Step 3 consumes an uncertain amount of memory and is the bottleneck of the entire ICRA analysis process, requiring careful handling.
+Step 3 consumes a large and uncertain amount of memory, making it the bottleneck of the entire ICRA analysis process.
 
 Here are some example codes:
 
@@ -66,15 +66,22 @@ db=~/db/db_name
 bamdir=~/bam
 pmpdir=~/pmp
 outdir=~/
+listdir=~/list.txt # sample name list
 threads=30
+# Using specified bamfol and pmpfol
 icra --generate_bam --bamfol ${bamdir} --fq1 ${fqdir} --db ${db} --threads ${threads}
 icra --bam_to_pmp --bamfol ${bamdir} --pmpfol ${pmpdir} --fq1 ${fqdir}
 icra --bamfol ${bamdir} --pmpfol ${pmpdir} \
     --outfol ${outdir} --fq1 ${fqdir} \
     --db ${db} --use_theta --debug > sgv.log 2>&1
-
+    
+# Using only outfol
 icra --generate_bam --outfol ${outdir} --fq1 ${fqdir} --db ${db} --threads ${threads}
 icra --bam_to_pmp --outfol ${outdir} --fq1 ${fqdir}
 icra --outfol ${outdir} --fq1 ${fqdir} \
     --db ${db} --use_theta --debug > sgv.log 2>&1
+
+# Parallel computing using rush
+cat ${listdir} | rush -j ${threads} \
+    "icra --bam_to_pmp --outfol ${outdir} --fq1 ${fqdir}"
 ```
