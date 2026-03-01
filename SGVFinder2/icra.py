@@ -34,7 +34,8 @@ def get_ujson_splitting_point(delta):
 
 
 def single_file(
-        fq1, fq2, 
+        fq1, fq2,
+        bamfol, pmpfol,
         outfol=os.getcwd(),
         max_mismatch=8,
         consider_lengths=False,
@@ -57,6 +58,12 @@ def single_file(
         print('Creating directory %s...'%outfol)
         Path(outfol).mkdir(parents=True, exist_ok=True)
 
+    if bamfol is None:
+        bamfol = outfol
+
+    if pmpfol is None:
+        pmpfol = outfol
+
     if fq2 is None:
         print('Running ICRA on single-end read!')
         print('Single-',fq1)
@@ -68,27 +75,28 @@ def single_file(
 
     log_.debug('Loading database...')
     length_db_f, indexf, dest_dictf, dlen_db_f = dbpath + '.lengths', dbpath, dbpath + '.dests', dbpath + '.dlen'
-    outpref = join(outfol,
-                   basename(fq1).replace('_1.fastq.gz', '').replace('_1.fastq', '').replace('.fastq.gz', '').replace(
-                       '.fastq', ''))
+    file_basename = basename(fq1).replace('_1.fastq.gz', '').replace('_1.fastq', '').replace('.fastq.gz', '').replace(
+            '.fastq', '').replace('_1.fq.gz', '').replace('_1.fq', '').replace('.fq.gz', '').replace('.fq', '')
+    bampref = join(bamfol, file_basename) 
+    pmppref = join(pmpfol, file_basename) 
+    outpref = join(outfol, file_basename)
     log_.debug('Loaded. Mapping file...')
 
-    if not exists(outpref + '.bam'):
-        do_pair_simple(fq1, fq2, outpref, indexf, senspreset, report_alns, max_ins, threads)
+    if not exists(bampref + '.bam'):
+        do_pair_simple(fq1, fq2, bampref, indexf, senspreset, report_alns, max_ins, threads)
     else:
-        print('%s already exists, skipping mapping step...'%(outpref + '.bam'))
-
+        print('%s already exists, skipping mapping step...'%(bampref + '.bam'))
     log_.debug('Mapped. Converting to pmp')
-    if not exists(outpref + '.pmp'):
-        sam2pmp(outpref + '.bam', outpref + '.pmp', full=True)
+    if not exists(pmppref + '.pmp'):
+        sam2pmp(bampref + '.bam', pmppref + '.pmp', full=True)
     #AYA DEBUG - i commented it out to save bam
     #_tryrm(outpref + '.bam')
     log_.debug('PMP ready. Running ICRA...')
     #if not exists('delta_new_for_debug.pkl'):
-    if not exists(outpref + '_1.jsdel'):
+    if not exists(outpref + '.jsdel'):
 
         read_container, pi, theta1, average_read_length, lengthdb = \
-            _initialize(fq1, fq2, outpref + '.pmp', dlen_db_f, max_mismatch, consider_lengths, length_minimum,
+            _initialize(fq1, fq2, pmppref + '.pmp', dlen_db_f, max_mismatch, consider_lengths, length_minimum,
                         length_maximum,
                         min_reads, min_bins, max_bins, dense_region_coverage, dest_dictf, use_theta)
         if len(pi) == 0:
